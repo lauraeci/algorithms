@@ -32,6 +32,26 @@ class Node:
         else:
             return None
 
+
+    def count_leaves(self, node):
+        if node is None:
+            return 0
+        elif node.left is None and node.right is None:
+            return 1
+        else:
+            return self.count_leaves(node.left) + self.count_leaves(node.right);
+
+    def pre_order_clone(self, node):
+        if node is None:
+            return node
+
+        temp = Node(None, None, None)
+        temp.data = node.data
+        temp.left = self.pre_order_clone(node.left)
+        temp.right = self.pre_order_clone(node.right)
+
+        return temp
+
     def post_order(self, node):
         if node is not None:
             self.post_order(node.left)
@@ -39,6 +59,21 @@ class Node:
             node.display()
         else:
             return None
+
+    def height(self, node):
+        if node is None:
+            return 0
+        else:
+            # find height of the left branch
+            left_tree_height = self.height(node.left)
+            # find the height of the right branch
+            right_tree_height = self.height(node.right)
+
+            # Use the larger one
+            if left_tree_height > right_tree_height:
+                return left_tree_height + 1
+            else:
+                return right_tree_height + 1
 
     def level_order(self, node):
         q = []
@@ -90,3 +125,17 @@ if __name__ == '__main__':
     print 'level order traversal'
 
     print tree.level_order(tree)
+
+    print 'Height of tree'
+
+    print tree.height(tree)
+
+    print 'Count leaves'
+
+    print tree.count_leaves(tree)
+
+    tree_copy = tree.pre_order_clone(tree)
+
+    print 'Copy of tree'
+
+    print tree_copy.level_order(tree_copy)
